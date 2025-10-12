@@ -1,17 +1,61 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Dashboard
 
-Currently, two official plugins are available:
+This project is a React dashboard application built with Vite, Tailwind CSS, and React Router DOM.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started
 
-## React Compiler
+### Prerequisites
+- Node.js (v16 or newer recommended)
+- npm or yarn
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Installation
+1. Clone the repository:
+	```zsh
+	git clone https://github.com/Akshitpatel25/dashboard.git
+	cd dashboard
+	```
+2. Install dependencies:
+	```zsh
+	npm install --legacy-peer-deps
+	# or
+	yarn install --legacy-peer-deps
+	```
+	> If you encounter errors related to peer dependencies, use the `--legacy-peer-deps` flag as shown above.
 
-## Expanding the ESLint configuration
+### Running Locally
+1. Start the development server:
+	```zsh
+	npm run dev
+	# or
+	yarn dev
+	```
+2. Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# dashboard
+## Deployment
+
+To deploy on Vercel, make sure you have a `vercel.json` file in the root directory with the following content:
+```json
+{
+  "rewrites": [
+	 { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+```
+This ensures proper routing for React Router DOM.
+
+## Design Decisions & Challenges
+
+- **Routing:** Used React Router DOM for client-side routing. Added `vercel.json` for SPA routing support on Vercel.
+- **Styling:** Tailwind CSS for rapid UI development and easy customization.
+- **State Management:** Redux Toolkit (if used) for scalable state management.
+- **Challenge:** Finding exact resources and documentation for some features was time-consuming.
+- **Installation Issues:** Faced errors due to outdated package versions; resolved by using `--legacy-peer-deps` during installation.
+
+## Improvements Made
+- Improved folder structure for better maintainability.
+- Added clear instructions for deployment and local setup.
+- Enhanced error handling and documentation.
+
+---
+Feel free to contribute or raise issues for improvements!
