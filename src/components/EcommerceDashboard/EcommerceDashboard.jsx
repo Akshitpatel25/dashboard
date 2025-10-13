@@ -93,15 +93,15 @@ const EcommerceDashboard = () => {
   const navigate = useNavigate();
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">eCommerce</h1>
+      <h1 className="text-xl font-semibold pb-5">eCommerce</h1>
       {/* Top Stats Cards */}
-      <div className="flex flex-col lg:flex-row w-full h-fit gap-6">
+      <div className="flex flex-col xl:flex-row w-full h-fit gap-6  ">
         {/* 4boxs  */}
-        <div className="w-full lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div className="w-full xl:w-1/2 grid grid-cols-2  gap-3 lg:gap-6">
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="rounded-2xl p-6 transition-all hover:shadow-lg flex flex-col justify-center gap-2 w-full"
+              className="rounded-2xl p-3 px-5 lg:p-6 transition-all hover:shadow-lg flex flex-col justify-around gap-2 w-full "
               style={{ backgroundColor: stat.bgColor }}
               onClick={() => {
                 if (stat.title === "Orders") {
@@ -110,7 +110,7 @@ const EcommerceDashboard = () => {
               }}
             >
               <h1
-                className={`font-semibold text-xl mb-2 ${
+                className={`font-semibold text-lg lg:text-2xl mb-1  ${
                   stat.title === "Orders" || stat.title === "Revenue"
                     ? isDark
                       ? "text-white"
@@ -123,9 +123,9 @@ const EcommerceDashboard = () => {
                 {stat.title}
               </h1>
 
-              <div className="flex items-end justify-between">
+              <div className="flex items-start justify-between  flex-col md:flex-row">
                 <h3
-                  className={`text-3xl font-semibold font-sans ${
+                  className={`text-lg lg:text-2xl font-semibold font-sans ${
                     stat.title === "Customers" || stat.title === "Growth"
                       ? "text-[#1C1C1C]"
                       : isDark
@@ -136,7 +136,7 @@ const EcommerceDashboard = () => {
                   {stat.value}
                 </h3>
                 <div
-                  className={`flex items-center gap-1 text-sm font-medium ${
+                  className={`flex items-center gap-1 text-sm font-medium h-full ${
                     !isDark
                       ? "text-[#1C1C1C]"
                       : stat.title === "Revenue" || stat.title === "Orders"
@@ -146,7 +146,7 @@ const EcommerceDashboard = () => {
                       : "text-red-500"
                   }`}
                 >
-                  <span>{stat.change}</span>
+                  <span >{stat.change}</span>
                   {stat.isPositive ? (
                     <TrendingUp sx={{ fontSize: 16 }} />
                   ) : (
@@ -161,27 +161,27 @@ const EcommerceDashboard = () => {
           ))}
         </div>
 
-        <div className="w-full lg:w-1/2 ">
+        <div className="w-full xl:w-1/2 h-80  ">
           <StackedBarChart />
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row w-full h-auto lg:h-96 gap-6">
-        <div className="w-full lg:w-3/4 h-80 lg:h-full">
+      <div className="flex flex-col xl:flex-row w-full h-fit gap-6 ">
+        <div className="w-full xl:w-3/4 h-96 ">
           <LineChart />
         </div>
 
-        <div className="w-full lg:w-1/4 h-80 lg:h-full">
-          <WorldMap />
+        <div className="w-full xl:w-1/4 h-96">
+            <WorldMap />
         </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row w-full gap-6 ">
-        <div className="w-full lg:w-3/4 h-fit">
+      <div className="flex flex-col xl:flex-row w-full gap-6 ">
+      <div className="w-full xl:w-3/4 h-fit">
           <TopSellingProducts />
         </div>
 
-        <div className="w-full lg:w-1/4 h-fit ">
+      <div className="w-full xl:w-1/4 h-fit ">
           <DonutChart />
         </div>
       </div>

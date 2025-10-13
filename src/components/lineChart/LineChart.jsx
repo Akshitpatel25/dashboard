@@ -82,10 +82,8 @@ const LineChart = () => {
           maintainAspectRatio: false,
           layout: {
             padding: {
-              // left: 40,
               right: 40,
             },
-            
           },
           plugins: {
             legend: {
@@ -93,7 +91,35 @@ const LineChart = () => {
             },
             tooltip: {
               enabled: true,
+              mode: "index",
+              intersect: false,
+              backgroundColor: isDark
+                ? "rgba(0, 0, 0, 0.8)"
+                : "rgba(255, 255, 255, 0.8)",
+              titleColor: isDark ? "#fff" : "#000",
+              bodyColor: isDark ? "#fff" : "#000",
+              borderColor: isDark ? "#444" : "#ddd",
+              borderWidth: 1,
+              padding: 12,
+              displayColors: true,
+              usePointStyle: true, // Use circle instead of box
+              boxWidth: 6, // Size of the circle
+              boxHeight: 6,
+              callbacks: {
+                label: function (context) {
+                  return context.dataset.label + ": $" + context.parsed.y + "M";
+                },
+              },
             },
+          },
+          interaction: {
+            mode: "nearest", // Changed from null
+            axis: "x", // Trigger on x-axis proximity
+            intersect: false, // Don't require exact intersection
+          },
+          hover: {
+            mode: "nearest", // Changed from null
+            intersect: false,
           },
           scales: {
             x: {
@@ -112,10 +138,10 @@ const LineChart = () => {
             y: {
               grace: "5",
               beginAtZero: true,
-              max: 30, // Add this
+              max: 30,
               grid: {
                 display: true,
-                color: isDark ? "#333" : "#e5e5e5", // Optional: better colors
+                color: isDark ? "#333" : "#e5e5e5",
               },
               ticks: {
                 display: true,
@@ -124,8 +150,8 @@ const LineChart = () => {
                   size: 14,
                 },
                 callback: (value) => (value == 0 ? "0" : value + "M"),
-                stepSize: 10, // Change from 4 to 10
-                count: 4, // Add this to force 4 ticks (0, 10, 20, 30)
+                stepSize: 10,
+                count: 4,
               },
               border: {
                 display: false,
@@ -152,10 +178,14 @@ const LineChart = () => {
         isDark ? "bg-[#282828]" : "bg-[#f7f9fb]"
       } rounded-2xl h-full w-full flex flex-col`}
     >
-      <div className="flex items-center justify-between p-6">
+      <div className="flex items-center justify-between p-3  xl:p-6">
         <div className="flex items-center gap-6">
           <h1 className="text-xl font-bold text-theme-text">Revenue</h1>
-          <span className={`w-0.5 h-6 ${isDark ? "bg-[#FFFFFF33]" : "bg-[#1C1C1C33]"}`}></span>
+          <span
+            className={`w-0.5 h-6 ${
+              isDark ? "bg-[#FFFFFF33]" : "bg-[#1C1C1C33]"
+            }`}
+          ></span>
           <div className="flex items-center gap-2">
             <span
               className={`w-2.5 h-2.5 rounded-full ${

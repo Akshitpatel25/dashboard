@@ -67,7 +67,8 @@ const DashboardLayout = ({ children }) => {
     if (windowWidth < 768) {
       setIsLeftOpen(false);
       setIsRightOpen(false);
-    } else if (windowWidth < 1024) {
+    } else if (windowWidth <= 1024) {
+      // Changed < to <=
       setIsLeftOpen(true);
       setIsRightOpen(false);
     } else {
@@ -434,7 +435,7 @@ const DashboardLayout = ({ children }) => {
           </Toolbar>
         </AppBar>
         {/* ===== Page Content ===== */}
-        <main className="flex-1 p-6 overflow-y-auto bg-theme text-theme-text w-full">
+        <main className="flex-1 p-3 lg:p-6 overflow-y-auto bg-theme text-theme-text w-full">
           {children}
         </main>
       </div>

@@ -1,20 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { VectorMap } from "@react-jvectormap/core";
 import { worldMill } from "@react-jvectormap/world";
 import { useSelector } from "react-redux";
 
 function WorldMap() {
   const isDark = useSelector((state) => state.theme.value);
+  const containerRef = useRef(null);
   
   useEffect(() => {
-    // Disable wheel event capture on the map SVG
-    const mapContainer = document.querySelector('.jvectormap-container');
-    if (mapContainer) {
-      const svg = mapContainer.querySelector('svg');
-      if (svg) {
-        svg.style.pointerEvents = 'none';
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Completely disable all mouse/touch interactions on the map
+    const disableMapInteractions = () => {
+      const jvmContainer = container.querySelector('.jvectormap-container');
+      if (jvmContainer) {
+        jvmContainer.style.pointerEvents = 'none';
       }
-    }
+    };
+
+    // Run immediately
+    disableMapInteractions();
+
+    // Also run after a small delay to catch any late renders
+    const timer = setTimeout(disableMapInteractions, 100);
+
+    // Watch for new map renders and disable them too
+    const observer = new MutationObserver(() => {
+      disableMapInteractions();
+    });
+
+    observer.observe(container, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
   }, [isDark]);
 
   const locations = [
@@ -33,14 +57,17 @@ function WorldMap() {
 
   return (
     <div
+      ref={containerRef}
       className={`w-full h-full ${
         isDark ? "bg-[#282828]" : "bg-[#F7F9FB]"
       } rounded-2xl flex flex-col p-6 gap-4`}
+      style={{ userSelect: 'none' }}
     >
       <h2 className={`text-xl font-bold`}>Revenue by Location</h2>
 
       <div 
-        className="w-full h-44 flex justify-center items-center pointer-events-none"
+        className="w-full h-32 flex items-center justify-center"
+        style={{ pointerEvents: 'none' }}
       >
         <VectorMap
           key={isDark ? "dark" : "light"}

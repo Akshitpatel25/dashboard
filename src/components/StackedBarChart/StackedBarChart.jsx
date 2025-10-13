@@ -1,12 +1,31 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as Chart from "chart.js";
 import { useSelector } from "react-redux";
-import { Height } from "@mui/icons-material";
 
 export default function StackedBarChart() {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
+  const containerRef = useRef(null);
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const isDark = useSelector((state) => state.theme.value);
+
+  // Track container size
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { width, height } = entry.contentRect;
+        setContainerSize({ width, height });
+      }
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (chartRef.current) {
@@ -17,12 +36,17 @@ export default function StackedBarChart() {
 
       const ctx = chartRef.current.getContext("2d");
 
+      // Calculate responsive sizes based on container height
+      const height = containerSize.height || 300;
+      const fontSize = Math.max(10, Math.min(20, height / 15));
+      const padding = Math.max(10, Math.min(30, height / 15));
+
       // Chart data
       const data = {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
         datasets: [
           {
-            label: "Category 1",
+            label: "Projection",
             data: [18, 21, 19, 23, 15, 21],
             backgroundColor: "#a8c5d4",
             borderColor: "#a8c5d4",
@@ -30,7 +54,7 @@ export default function StackedBarChart() {
             barPercentage: 0.4,
           },
           {
-            label: "Category 2",
+            label: "Actual",
             data: [3, 5, 4, 6, 4, 5],
             backgroundColor: "rgba(168, 197, 212, 0.5)",
             borderColor: "#6b8694",
@@ -47,20 +71,27 @@ export default function StackedBarChart() {
         data,
         options: {
           responsive: true,
-          maintainAspectRatio: true,
+          maintainAspectRatio: false,
           plugins: {
             legend: {
               display: false,
             },
             tooltip: {
-              enabled: false, // disables tooltip
+              enabled: true,
+              mode: "index",
+              intersect: false,
+              callbacks: {
+                label: function (context) {
+                  return context.dataset.label + ": $" + context.parsed.y + "M";
+                },
+              },
             },
           },
           hover: {
-            mode: null, // disables hover interaction
+            mode: null,
           },
           interaction: {
-            mode: null, // disables dataset hover interaction
+            mode: null,
           },
           scales: {
             x: {
@@ -72,7 +103,7 @@ export default function StackedBarChart() {
               ticks: {
                 color: "#999",
                 font: {
-                  size: 20,
+                  size: fontSize,
                 },
               },
             },
@@ -87,10 +118,10 @@ export default function StackedBarChart() {
                 drawBorder: false,
               },
               ticks: {
-                padding: 30,
+                padding: padding,
                 color: "#999",
                 font: {
-                  size: 20,
+                  size: fontSize,
                 },
                 callback: function (value) {
                   return value !== 0 ? value + "M" : value;
@@ -115,13 +146,20 @@ export default function StackedBarChart() {
         chartInstance.current.destroy();
       }
     };
-  }, [isDark]);
-
+  }, [isDark, containerSize]);
 
   return (
-    <div className={` ${isDark ? "bg-[#282828]" : "bg-[#f7f9fb]"} rounded-2xl`}>
-      <h1 className="text-xl font-bold p-6 ">Projections vs Actuals</h1>
-      <canvas ref={chartRef}></canvas>
+    <div
+      className={`${
+        isDark ? "bg-[#282828]" : "bg-[#f7f9fb]"
+      } rounded-2xl h-full w-full flex flex-col`}
+    >
+      <h1 className=" text-lg xl:text-xl font-bold px-5 xl:px-6 pt-3 xl:pt-6 pb-2">
+        Projections vs Actuals
+      </h1>
+      <div ref={containerRef} className="flex-1 p-3 px-0 xl:px-6 xl:pb-6 min-h-0">
+        <canvas ref={chartRef}></canvas>
+      </div>
     </div>
   );
 }
