@@ -103,11 +103,11 @@ const EcommerceDashboard = () => {
               key={index}
               className="rounded-2xl p-3 px-5 lg:p-6 transition-all hover:shadow-lg flex flex-col justify-around gap-2 w-full "
               style={{ backgroundColor: stat.bgColor }}
-              onClick={() => {
+              {/* onClick={() => {
                 if (stat.title === "Orders") {
                   navigate("/orderlist");
                 }
-              }}
+              }} */}
             >
               <h1
                 className={`font-semibold text-lg lg:text-2xl mb-1  ${
