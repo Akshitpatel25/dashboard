@@ -12,7 +12,7 @@ import LineChart from "../lineChart/LineChart";
 import WorldMap from "../worldMap/WorldMap";
 import TopSellingProducts from "../TopSellingProducts/TopSellingProducts";
 import DonutChart from "../donutChart/DonutChart";
-import { Navigate, useNavigate } from "react-router-dom";
+// import { Navigate, useNavigate } from "react-router-dom";
 const EcommerceDashboard = () => {
   const isDark = useSelector((state) => state.theme.value);
 
@@ -90,7 +90,7 @@ const EcommerceDashboard = () => {
     { label: "E-mail", value: "$48.96", color: "#F59E0B", percentage: "" },
   ];
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <div className="space-y-6">
       <h1 className="text-xl font-semibold pb-5">eCommerce</h1>
